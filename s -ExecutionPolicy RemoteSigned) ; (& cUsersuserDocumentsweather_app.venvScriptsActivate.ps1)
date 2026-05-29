@@ -1,0 +1,17 @@
+[33mcommit 05bfeb29f3162097c3044c1962d4b8b0f42d8998[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: wissem-ben-khalifa <wissembenkalifa456@gmail.com>
+Date:   Fri May 29 07:36:34 2026 +0100
+
+    Add backend setup - database connection and main app
+
+[33mcommit 924ff9b73ba31b7e761d95abe81a996c0902215d[m
+Author: wissem-ben-khalifa <wissembenkalifa456@gmail.com>
+Date:   Fri May 29 07:32:51 2026 +0100
+
+    Add database connection and weather search model
+
+[33mcommit ee8cdb97a3906d2178dc4d2d8719d6bbc3087bbd[m
+Author: wissem-ben-khalifa <wissembenkalifa456@gmail.com>
+Date:   Fri May 29 07:01:52 2026 +0100
+
+    Initial project structure
