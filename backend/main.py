@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, Base
 import models
-from routes import weather, crud, extras
+from routes import weather, crud, extras, export
 
 Base.metadata.create_all(bind=engine)
 
@@ -19,6 +19,7 @@ app.add_middleware(
 app.include_router(weather.router)
 app.include_router(crud.router)
 app.include_router(extras.router)
+app.include_router(export.router)
 
 @app.get("/")
 def root():
