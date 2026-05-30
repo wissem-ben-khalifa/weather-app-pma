@@ -2,14 +2,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, Base
 import models
-from routes import weather
+from routes import weather, crud, extras
 
-# Create all tables
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Weather App API")
 
-# Allow React frontend to talk to backend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
@@ -18,8 +16,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routers
 app.include_router(weather.router)
+app.include_router(crud.router)
+app.include_router(extras.router)
 
 @app.get("/")
 def root():
