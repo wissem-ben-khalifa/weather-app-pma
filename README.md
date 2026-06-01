@@ -29,6 +29,9 @@ A full-stack weather application built with React (frontend) and FastAPI (backen
 - WeatherAPI.com — current weather & forecast
 - YouTube Data API v3 — location videos
 - OpenStreetMap Nominatim — maps & geocoding
+- AQICN (World Air Quality Index API) — real-time air quality index (AQI)
+
+> Air quality data is provided by the World Air Quality Index (WAQI) project via aqicn.org.
 
 ---
 
@@ -44,6 +47,7 @@ A full-stack weather application built with React (frontend) and FastAPI (backen
 - Responsive design for all screen sizes
 - Error handling for invalid locations and API failures
 - Get weather by current GPS location
+- Real-time air quality index (AQI) with health levels and pollutant data
 
 ---
 
@@ -67,6 +71,7 @@ Create a `.env` file in the `backend/` folder:
 DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/weatherdb
 WEATHER_API_KEY=your_weatherapi_key
 YOUTUBE_API_KEY=your_google_api_key
+AIR_QUALITY_API_KEY=your_air_quality_api_key
 
 
 Create the database:
@@ -133,3 +138,4 @@ weather-app/
 | GET | /export/csv | Export as CSV |
 | GET | /export/pdf | Export as PDF |
 | GET | /export/markdown | Export as Markdown |
+| GET | /extras/airquality | Get air quality index (AQI) for a location |
