@@ -62,52 +62,54 @@ function App() {
       )}
 
       {/* TABS */}
-      {weather && (
-        <div className="tabs">
-          <button
-            className={activeTab === 'weather' ? 'tab active' : 'tab'}
-            onClick={() => setActiveTab('weather')}
-          >
-            <img src={sunIcon} alt="weather" className="tab-icon" />
-            Weather
-          </button>
-          <button
-            className={activeTab === 'forecast' ? 'tab active' : 'tab'}
-            onClick={() => setActiveTab('forecast')}
-          >
-            <img src={calendarIcon} alt="forecast" className="tab-icon" />
-            5-Day Forecast
-          </button>
-          <button
-            className={activeTab === 'map' ? 'tab active' : 'tab'}
-            onClick={() => setActiveTab('map')}
-          >
-            <img src={mapIcon} alt="map" className="tab-icon" />
-            Map
-          </button>
-          <button
-            className={activeTab === 'videos' ? 'tab active' : 'tab'}
-            onClick={() => setActiveTab('videos')}
-          >
-            <img src={videoIcon} alt="videos" className="tab-icon" />
-            Videos
-          </button>
-          <button
-            className={activeTab === 'saved' ? 'tab active' : 'tab'}
-            onClick={() => setActiveTab('saved')}
-          >
-            <img src={saveIcon} alt="saved" className="tab-icon" />
-            Saved Searches
-          </button>
-          <button
-            className={activeTab === 'export' ? 'tab active' : 'tab'}
-            onClick={() => setActiveTab('export')}
-          >
-            <img src={exportIcon} alt="export" className="tab-icon" />
-            Export
-          </button>
-        </div>
-      )}
+      <div className="tabs">
+        
+          <>
+            <button
+              className={activeTab === 'weather' ? 'tab active' : 'tab'}
+              onClick={() => setActiveTab('weather')}
+            >
+              <img src={sunIcon} alt="weather" className="tab-icon" />
+              Weather
+            </button>
+            <button
+              className={activeTab === 'forecast' ? 'tab active' : 'tab'}
+              onClick={() => setActiveTab('forecast')}
+            >
+              <img src={calendarIcon} alt="forecast" className="tab-icon" />
+              5-Day Forecast
+            </button>
+            <button
+              className={activeTab === 'map' ? 'tab active' : 'tab'}
+              onClick={() => setActiveTab('map')}
+            >
+              <img src={mapIcon} alt="map" className="tab-icon" />
+              Map
+            </button>
+            <button
+              className={activeTab === 'videos' ? 'tab active' : 'tab'}
+              onClick={() => setActiveTab('videos')}
+            >
+              <img src={videoIcon} alt="videos" className="tab-icon" />
+              Videos
+            </button>
+          </>
+        
+        <button
+          className={activeTab === 'saved' ? 'tab active' : 'tab'}
+          onClick={() => setActiveTab('saved')}
+        >
+          <img src={saveIcon} alt="saved" className="tab-icon" />
+          Saved Searches
+        </button>
+        <button
+          className={activeTab === 'export' ? 'tab active' : 'tab'}
+          onClick={() => setActiveTab('export')}
+        >
+          <img src={exportIcon} alt="export" className="tab-icon" />
+          Export
+        </button>
+      </div>
 
       {/* TAB CONTENT */}
       <div className="content">

@@ -45,3 +45,7 @@ export const exportPDF = () =>
 
 export const exportMarkdown = () =>
   api.get('/export/markdown', { responseType: 'blob' });
+
+export const exportXML = () =>
+  api.get('/export/xml', { responseType: 'blob' });
+

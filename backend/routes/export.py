@@ -7,6 +7,7 @@ from fastapi.responses import StreamingResponse, JSONResponse
 from sqlalchemy.orm import Session
 from database import get_db
 from models import WeatherSearch
+import xml.etree.ElementTree as ET
 
 router = APIRouter(prefix="/export", tags=["Data Export"])
 
@@ -118,4 +119,36 @@ def export_markdown(db: Session = Depends(get_db)):
         io.BytesIO(md.encode()),
         media_type="text/markdown",
         headers={"Content-Disposition": "attachment; filename=weather_report.md"}
+    )
+# ── EXPORT XML ──
+@router.get("/xml")
+def export_xml(db: Session = Depends(get_db)):
+    searches = get_searches(db)
+
+    root = ET.Element("WeatherSearches")
+    root.set("generated_by", "Weather App by Wissem Ben Khalifa")
+    root.set("company", "PM Accelerator")
+
+    for s in searches:
+        search_elem = ET.SubElement(root, "WeatherSearch")
+
+        ET.SubElement(search_elem, "ID").text = str(s.id)
+        ET.SubElement(search_elem, "Location").text = str(s.location)
+        ET.SubElement(search_elem, "Country").text = str(s.country)
+        ET.SubElement(search_elem, "TemperatureC").text = str(s.temperature_c)
+        ET.SubElement(search_elem, "TemperatureF").text = str(s.temperature_f)
+        ET.SubElement(search_elem, "Condition").text = str(s.condition)
+        ET.SubElement(search_elem, "Humidity").text = str(s.humidity)
+        ET.SubElement(search_elem, "WindKph").text = str(s.wind_kph)
+        ET.SubElement(search_elem, "DateFrom").text = str(s.date_from)
+        ET.SubElement(search_elem, "DateTo").text = str(s.date_to)
+        ET.SubElement(search_elem, "CreatedAt").text = str(s.created_at)
+
+    xml_str = ET.tostring(root, encoding="unicode", xml_declaration=False)
+    xml_output = '<?xml version="1.0" encoding="UTF-8"?>\n' + xml_str
+
+    return StreamingResponse(
+        io.BytesIO(xml_output.encode("utf-8")),
+        media_type="application/xml",
+        headers={"Content-Disposition": "attachment; filename=weather_report.xml"}
     )

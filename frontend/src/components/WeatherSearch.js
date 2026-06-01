@@ -9,39 +9,44 @@ function WeatherSearch({
 }) {
   const [location, setLocation] = useState('');
 
-  const handleSearch = async () => {
-    if (!location.trim()) {
-      setError('Please enter a location');
-      return;
-    }
+const handleSearch = async () => {
+  if (!location.trim()) {
+    setError('Please enter a location');
+    return;
+  }
 
-    setLoading(true);
-    setError(null);
+  setLoading(true);
+  setError(null);
 
-    try {
-      const [weatherRes, forecastRes, mapRes, videosRes] = await Promise.all([
-        getCurrentWeather(location),
-        getForecast(location),
-        getMap(location),
-        getYoutubeVideos(location),
-      ]);
+  try {
+    // First get weather to confirm real location name
+    const weatherRes = await getCurrentWeather(location);
+    const confirmedLocation = `${weatherRes.data.location}, ${weatherRes.data.country}`;
 
-      setWeather(weatherRes.data);
-      setForecast(forecastRes.data);
-      setMapData(mapRes.data);
-      setVideos(videosRes.data);
-    } catch (err) {
-      setError(
-        err.response?.data?.detail || 'Location not found. Please try again.'
-      );
-      setWeather(null);
-      setForecast(null);
-      setMapData(null);
-      setVideos(null);
-    } finally {
-      setLoading(false);
-    }
-  };
+    // Use confirmed location for all other APIs
+    const [forecastRes, mapRes, videosRes] = await Promise.all([
+      getForecast(location),
+      getMap(confirmedLocation),
+      getYoutubeVideos(confirmedLocation),
+    ]);
+
+    setWeather(weatherRes.data);
+    setForecast(forecastRes.data);
+    setMapData(mapRes.data);
+    setVideos(videosRes.data);
+
+  } catch (err) {
+    setError(
+      err.response?.data?.detail || 'Location not found. Please try again.'
+    );
+    setWeather(null);
+    setForecast(null);
+    setMapData(null);
+    setVideos(null);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') handleSearch();

@@ -141,3 +141,4 @@ def delete_search(search_id: int, db: Session = Depends(get_db)):
     db.delete(search)
     db.commit()
     return {"message": f"Search {search_id} deleted successfully"}
+
