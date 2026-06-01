@@ -49,3 +49,5 @@ export const exportMarkdown = () =>
 export const exportXML = () =>
   api.get('/export/xml', { responseType: 'blob' });
 
+export const getAirQuality = (location) =>
+  api.get(`/extras/airquality?location=${location}`);

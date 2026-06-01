@@ -7,7 +7,7 @@ load_dotenv()
 
 router = APIRouter(prefix="/extras", tags=["Extra APIs"])
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
-GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
+AIR_QUALITY_API_KEY = os.getenv("AIR_QUALITY_API_KEY")
 
 
 # ── YOUTUBE VIDEOS ──
@@ -81,6 +81,65 @@ def get_map(location: str):
             "latitude": lat,
             "longitude": lng,
             "maps_url": f"https://www.openstreetmap.org/?mlat={lat}&mlon={lng}&zoom=12",
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+# ── AIR QUALITY ──
+@router.get("/airquality")
+def get_air_quality(location: str):
+    try:
+        response = requests.get(
+            f"https://api.waqi.info/feed/{location}/",
+            params={"token": AIR_QUALITY_API_KEY}
+        )
+        data = response.json()
+
+        if data["status"] != "ok":
+            raise HTTPException(
+                status_code=404,
+                detail=f"Air quality data not found for '{location}'"
+            )
+
+        aqi = data["data"]["aqi"]
+        
+        # AQI level description
+        if aqi <= 50:
+            level = "Good"
+            color = "#48bb78"
+            description = "Air quality is satisfactory and poses little or no risk."
+        elif aqi <= 100:
+            level = "Moderate"
+            color = "#ecc94b"
+            description = "Acceptable air quality. Sensitive people may experience minor effects."
+        elif aqi <= 150:
+            level = "Unhealthy for Sensitive Groups"
+            color = "#ed8936"
+            description = "Sensitive groups may experience health effects."
+        elif aqi <= 200:
+            level = "Unhealthy"
+            color = "#fc8181"
+            description = "Everyone may experience health effects."
+        elif aqi <= 300:
+            level = "Very Unhealthy"
+            color = "#9f7aea"
+            description = "Health alert: everyone may experience serious effects."
+        else:
+            level = "Hazardous"
+            color = "#742a2a"
+            description = "Emergency conditions. Everyone is affected."
+
+        return {
+            "location": location,
+            "aqi": aqi,
+            "level": level,
+            "color": color,
+            "description": description,
+            "dominentpol": data["data"].get("dominentpol", "N/A"),
+            "time": data["data"]["time"]["s"],
         }
 
     except HTTPException:

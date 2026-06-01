@@ -7,6 +7,7 @@ import SavedSearches from './components/SavedSearches';
 import MapDisplay from './components/MapDisplay';
 import YoutubeVideos from './components/YoutubeVideos';
 import ExportButtons from './components/ExportButtons';
+import AirQuality from './components/AirQuality';
 
 // Icons
 import sunIcon from './assets/icons/sun.png';
@@ -15,6 +16,7 @@ import mapIcon from './assets/icons/map.png';
 import videoIcon from './assets/icons/video.png';
 import saveIcon from './assets/icons/save.png';
 import exportIcon from './assets/icons/export.png';
+import airIcon from './assets/icons/air.png';
 
 function App() {
   const [weather, setWeather] = useState(null);
@@ -24,6 +26,7 @@ function App() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('weather');
+  const [airQuality, setAirQuality] = useState(null);
 
   return (
     <div className="app">
@@ -45,6 +48,7 @@ function App() {
         setVideos={setVideos}
         setError={setError}
         setLoading={setLoading}
+        setAirQuality={setAirQuality}
       />
 
       {/* ERROR */}
@@ -71,6 +75,13 @@ function App() {
             >
               <img src={sunIcon} alt="weather" className="tab-icon" />
               Weather
+            </button>
+            <button
+              className={activeTab === 'air' ? 'tab active' : 'tab'}
+              onClick={() => setActiveTab('air')}
+            >
+              <img src={airIcon} alt="air" className="tab-icon" />
+              Air Quality
             </button>
             <button
               className={activeTab === 'forecast' ? 'tab active' : 'tab'}
@@ -119,6 +130,7 @@ function App() {
         {activeTab === 'videos' && videos && <YoutubeVideos videos={videos} />}
         {activeTab === 'saved' && <SavedSearches />}
         {activeTab === 'export' && <ExportButtons />}
+        {activeTab === 'air' && airQuality && <AirQuality airQuality={airQuality} />}
       </div>
     </div>
   );

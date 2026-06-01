@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { getCurrentWeather, getForecast, getMap, getYoutubeVideos } from '../api';
+import { getCurrentWeather, getForecast, getMap, getYoutubeVideos, getAirQuality } from '../api';
 import searchIcon from '../assets/icons/search.png';
 import locationIcon from '../assets/icons/location.png';
 
 function WeatherSearch({
   setWeather, setForecast, setMapData,
-  setVideos, setError, setLoading
+  setVideos, setError, setLoading, setAirQuality
 }) {
   const [location, setLocation] = useState('');
 
@@ -19,74 +19,83 @@ const handleSearch = async () => {
   setError(null);
 
   try {
-    // First get weather to confirm real location name
-    const weatherRes = await getCurrentWeather(location);
-    const confirmedLocation = `${weatherRes.data.location}, ${weatherRes.data.country}`;
+  // First get weather (source of truth)
+  const weatherRes = await getCurrentWeather(location);
 
-    // Use confirmed location for all other APIs
-    const [forecastRes, mapRes, videosRes] = await Promise.all([
-      getForecast(location),
-      getMap(confirmedLocation),
-      getYoutubeVideos(confirmedLocation),
-    ]);
+  // Clean location (avoid "City, Country" issues for other APIs)
+  const baseLocation = weatherRes.data.location.split(',')[0].trim();
 
-    setWeather(weatherRes.data);
-    setForecast(forecastRes.data);
-    setMapData(mapRes.data);
-    setVideos(videosRes.data);
+  const [forecastRes, mapRes, videosRes, airRes] = await Promise.all([
+    getForecast(location),
+    getMap(baseLocation),
+    getYoutubeVideos(location),
+    getAirQuality(baseLocation).catch(() => null),
+  ]);
 
-  } catch (err) {
-    setError(
-      err.response?.data?.detail || 'Location not found. Please try again.'
-    );
-    setWeather(null);
-    setForecast(null);
-    setMapData(null);
-    setVideos(null);
-  } finally {
-    setLoading(false);
-  }
-};
+  setWeather(weatherRes.data);
+  setForecast(forecastRes.data);
+  setMapData(mapRes.data);
+  setVideos(videosRes.data);
+  setAirQuality(airRes ? airRes.data : null);
+
+} catch (err) {
+  setError(
+    err.response?.data?.detail || 'Location not found. Please try again.'
+  );
+  setWeather(null);
+  setForecast(null);
+  setMapData(null);
+  setVideos(null);
+} finally {
+  setLoading(false);
+}};
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') handleSearch();
   };
 
   const handleGetLocation = () => {
-    if (!navigator.geolocation) {
-      setError('Geolocation is not supported by your browser');
-      return;
-    }
-    setLoading(true);
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
+  if (!navigator.geolocation) {
+    setError('Geolocation is not supported by your browser');
+    return;
+  }
+
+  setLoading(true);
+
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      try {
         const { latitude, longitude } = position.coords;
         const coords = `${latitude},${longitude}`;
-        setLocation(coords);
-        try {
-          const [weatherRes, forecastRes, mapRes, videosRes] = await Promise.all([
+
+        const [weatherRes, forecastRes, mapRes, videosRes, airRes] =
+          await Promise.all([
             getCurrentWeather(coords),
             getForecast(coords),
             getMap(coords),
             getYoutubeVideos(coords),
+            getAirQuality(coords).catch(() => null),
           ]);
-          setWeather(weatherRes.data);
-          setForecast(forecastRes.data);
-          setMapData(mapRes.data);
-          setVideos(videosRes.data);
-          setError(null);
-        } catch (err) {
-          setError('Could not get weather for your location');
-        } finally {
-          setLoading(false);
-        }
-      },
-      () => {
-        setError('Unable to retrieve your location');
+
+        setWeather(weatherRes.data);
+        setForecast(forecastRes.data);
+        setMapData(mapRes.data);
+        setVideos(videosRes.data);
+        setAirQuality(airRes ? airRes.data : null);
+        setError(null);
+
+      } catch (err) {
+        setError('Could not get weather for your location');
+      } finally {
         setLoading(false);
       }
-    );
-  };
+    },
+    () => {
+      setError('Unable to retrieve your location');
+      setLoading(false);
+    }
+  );
+};
 
   return (
     <div className="search-container card">

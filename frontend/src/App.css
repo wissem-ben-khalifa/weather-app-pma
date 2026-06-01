@@ -727,3 +727,85 @@ body {
 .xml-btn { background: #9f7aea; }
 .xml-btn:hover { background: #805ad5; }
 
+/* AIR QUALITY */
+.air-quality h2 {
+  margin-bottom: 5px;
+}
+
+.aqi-time {
+  color: #718096;
+  font-size: 0.8rem;
+  margin-bottom: 25px;
+}
+
+.aqi-main {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.aqi-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.aqi-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: white;
+}
+
+.aqi-label {
+  font-size: 0.9rem;
+  color: white;
+  opacity: 0.9;
+}
+
+.aqi-info h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.aqi-description {
+  color: #a0aec0;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.aqi-pollutant {
+  color: #a0aec0;
+  font-size: 0.9rem;
+}
+
+.aqi-scale h4 {
+  margin-bottom: 15px;
+}
+
+.scale-bars {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.scale-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: #a0aec0;
+}
+
+.scale-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}

@@ -40,7 +40,7 @@ A full-stack weather application built with React (frontend) and FastAPI (backen
 - Interactive map with OpenStreetMap
 - YouTube videos about the location
 - CRUD operations — save, view, edit, delete searches
-- Export data as JSON, CSV, PDF, Markdown
+- Export data as JSON, CSV, xml, PDF, Markdown
 - Responsive design for all screen sizes
 - Error handling for invalid locations and API failures
 - Get weather by current GPS location
@@ -67,7 +67,7 @@ Create a `.env` file in the `backend/` folder:
 DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/weatherdb
 WEATHER_API_KEY=your_weatherapi_key
 YOUTUBE_API_KEY=your_google_api_key
-GOOGLE_MAPS_API_KEY=your_google_api_key
+
 
 Create the database:
 ```bash
@@ -97,28 +97,24 @@ Frontend runs at: `http://localhost:3000`
 ---
 
 ## Project Structure
+
+```text
 weather-app/
 ├── backend/
-│   ├── routes/
-│   │   ├── weather.py      # Weather API endpoints
-│   │   ├── crud.py         # CRUD operations
-│   │   ├── extras.py       # YouTube & Maps
-│   │   └── export.py       # Data export
-│   ├── main.py             # FastAPI app
-│   ├── models.py           # Database models
-│   ├── database.py         # DB connection
-│   └── requirements.txt
 ├── frontend/
-│   ├── src/
-│   │   ├── components/     # React components
-│   │   ├── assets/icons/   # PNG icons
-│   │   ├── App.js
-│   │   ├── App.css
-│   │   └── api.js
-│   └── package.json
 └── README.md
+```
 
----
+### Backend
+- `routes/weather.py` – Weather API endpoints
+- `routes/crud.py` – CRUD operations
+- `routes/extras.py` – YouTube and Maps integration
+- `routes/export.py` – Data export endpoints
+
+### Frontend
+- `components/` – React UI components
+- `assets/icons/` – Weather icons
+- `api.js` – API communication layer
 
 ## API Endpoints
 
