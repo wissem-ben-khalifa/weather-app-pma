@@ -49,7 +49,6 @@ def get_youtube_videos(location: str):
 
 
 # ── GOOGLE MAPS ──
-# ── MAPS (OpenStreetMap - Free, No API key needed) ──
 @router.get("/maps")
 def get_map(location: str):
     try:
